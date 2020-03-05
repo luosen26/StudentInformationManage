@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.SattendanceDao">
+	<select id="findAll" resultType="S_attendance">
+		select a.*,s.id as "studentId.id",s.name as "studentId.name",
+		s.classId as "studentId.classId.id",s.password as "studentId.password",
+		s.sex as "studentId.sex",
+		c.id as "courseId.id",c.name as "courseId.name",c.teacher_id as "courseId.teacherId.id",
+		c.max_student_num as "courseId.max_student_num",c.info as "courseId.info",
+		c.selected_num as "courseId.selected_num"
+		from s_attendance a,s_student s,s_course c 
+		where a.student_id=s.id and a.course_id=c.id
+		<if test="cname!=null">
+			and c.name=#{cname}
+		</if>
+		<if test="date!=null">
+			and a.attendance_date=#{date}
+		</if>
+		<if test="sname!=null">
+			and s.name=#{sname}
+		</if>
+	</select>
+	<select id="findByCourseAndDate" resultType="int">
+		select count(id) from s_attendance where course_id=#{course_id}
+		and attendance_date=#{attendance_date}
+	</select>
+	<insert id="create">
+		insert into s_attendance values (null,#{student_id},#{course_id},#{attendance_date})
+	</insert>
+	<update id="modify">
+		update s_attendance set student_id=#{studentId.id},course_id=#{courseId.id},
+		attendance_date=#{attendance_date} where id=#{id}
+	</update>
+	<delete id="remove">
+		delete from s_attendance where id=#{id}
+	</delete>
+</mapper>

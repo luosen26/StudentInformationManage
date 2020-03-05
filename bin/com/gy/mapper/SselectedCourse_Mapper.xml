@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.SselectedCourseDao">
+	<select id="findAll" resultType="S_selected_course">
+		select sl.*,s.id as "studentId.id",s.name as "studentId.name",
+		s.classId as "studentId.classId.id",s.password as "studentId.password",
+		s.sex as "studentId.sex",
+		c.id as "courseId.id",c.name as "courseId.name",c.teacher_id as "courseId.teacherId.id",
+		c.max_student_num as "courseId.max_student_num",c.info as "courseId.info",
+		c.selected_num as "courseId.selected_num" 
+		from s_selected_course sl,s_student s,s_course c 
+		where sl.student_id=s.id and sl.course_id=c.id
+		<if test="name!=null">
+			and s.name=#{name}
+		</if>
+	</select>
+	<insert id="create">
+		insert into s_selected_course values (null,#{student_id},#{course_id})
+	</insert>
+	<update id="modify">
+		update s_selected_course set student_id=#{sid},course_id=#{cid} where id=#{id}
+	</update>
+	<delete id="remove">
+		delete from s_selected_course where id=#{id}
+	</delete>
+</mapper>

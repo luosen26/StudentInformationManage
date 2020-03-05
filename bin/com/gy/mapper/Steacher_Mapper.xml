@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.SteacherDao">
+	<select id="teacherLogin" resultType="S_teacher">
+		select*from s_teacher where name=#{name} 
+		and password=#{password}
+	</select>
+	<select id="findAll" resultType="S_teacher">
+		select*from s_teacher
+		<if test="name!=null">
+			where name like concat("%",#{name},"%")
+		</if>
+	</select>
+	<insert id="create">
+		insert into s_teacher values (null,#{name},#{sex},#{title},#{age},#{password})
+	</insert>
+	<update id="modify">
+		update s_teacher set name=#{name},sex=#{sex},title=#{title},age=#{age},
+		password=#{password} where id=#{id}
+	</update>
+	<delete id="remove">
+		delete from s_teacher where id=#{id}
+	</delete>
+</mapper>

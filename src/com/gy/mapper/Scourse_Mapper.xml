@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.ScourseDao">
+	<select id="findAll" resultType="S_course">
+		select c.*,t.id as "teacherId.id",t.name as "teacherId.name",t.sex as "teacherId.sex",
+		t.title as "teacherId.title",t.age as "teacherId.age",t.password as "teacherId.password"
+		from s_course c,s_teacher t where c.teacher_id=t.id
+		<if test="name!=null">
+			and c.name=#{name}
+		</if>
+		<if test="id!=0">
+			and c.teacher_id=#{id}
+		</if>
+	</select>
+	<select id="findById" resultType="S_course">
+		select c.*,t.id as "teacherId.id",t.name as "teacherId.name",t.sex as "teacherId.sex",
+		t.title as "teacherId.title",t.age as "teacherId.age",t.password as "teacherId.password"
+		from s_course c,s_teacher t where c.teacher_id=t.id
+		and c.id not in (select course_id from s_selected_course where student_id=#{id})
+	</select>
+	<insert id="create">
+		insert into s_course values (null,#{name},#{teacherId.id},
+		#{max_student_num},#{info},#{selected_num})
+	</insert>
+	<update id="modify">
+		update s_course set name=#{name},teacher_id=#{teacherId.id},
+		max_student_num=#{max_student_num},info=#{info},selected_num=#{selected_num}
+		where id=#{id}
+	</update>
+	<delete id="remove">
+		delete from s_course where id=#{id}
+	</delete>
+</mapper>

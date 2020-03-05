@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gy.dao.SstudentDao">
+	<select id="studentLogin" resultType="S_student">
+		select s.*,c.id as "classId.id",c.name as "classId.name",c.info as "classId.info" 
+		from s_student s,s_class c where s.classId=c.id 
+		and s.name=#{name} and s.password=#{password}
+	</select>
+	<select id="findAll" resultType="S_student">
+		select s.*,c.id as "classId.id",c.name as "classId.name",c.info as "classId.info" 
+		from s_student s,s_class c where s.classId=c.id
+		<if test="name!=null">
+			and s.name=#{name}
+		</if>
+		<if test="id!=0">
+			and s.classId=#{id}
+		</if>
+	</select>
+	<insert id="create">
+		insert into s_student values (null,#{name},#{classId.id},#{password},#{sex})
+	</insert>
+	<update id="modifyPassword">
+		update s_student set password=#{password} where id=#{id}
+	</update>
+	<update id="modify">
+		update s_student set name=#{name},classId=#{classId.id},password=#{password},sex=#{sex} where id=#{id}
+	</update>
+	<delete id="remove">
+		delete from s_student where id=#{id}
+	</delete>
+</mapper>
